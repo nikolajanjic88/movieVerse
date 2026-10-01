@@ -1,0 +1,13 @@
+{
+  "name": "nikola/movieverse",
+  "description": "Movieverse is a web application that allows users to browse and search for movies, view movie details, and manage their favorite movies.",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Core\\": "core/"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^5.7"
+  }
+}
