@@ -15,9 +15,9 @@
             Search
         </button>
     </form>
-    <?php if (!empty($movies['results'])): ?>
+    <?php if (!empty($movies)): ?>
         <div class="movie-grid">
-            <?php foreach ($movies['results'] as $movie): ?>
+            <?php foreach ($movies as $movie): ?>
                 <div class="movie-card">
                     <?php if (!empty($movie['poster_path'])): ?>
                         <img
@@ -60,6 +60,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
+        <?php include_once BASE_PATH . 'views/inc/pagination.php'; ?>
     <?php elseif (!empty($_GET['query'])): ?>
         <p class="no-results">
             No movies found.

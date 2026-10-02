@@ -17,18 +17,36 @@ class MovieController extends Controller
         $this->tmdb = new TmdbService();
     }
 
+    
     public function index()
     {
-        $movies = [];
+        $query = trim($_GET['query'] ?? '');
+       
+        $page = isset($_GET['page'])
+            ? (int) $_GET['page']
+            : 1;
 
-        if (!empty($_GET['query'])) {
-            $movies = $this->tmdb->searchMovies($_GET['query']);
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $response = [];
+
+        if ($query !== '') {
+            $response = $this->tmdb->searchMovies(
+                $query,
+                $page
+            );
         }
 
         return $this->view('movies/index', [
-            'movies' => $movies
+            'movies' => $response['results'] ?? [],
+            'query' => $query,
+            'currentPage' => $response['page'] ?? $page,
+            'totalPages' => $response['total_pages'] ?? 1
         ]);
     }
+
 
     public function show($id)
     {

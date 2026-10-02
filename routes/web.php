@@ -19,6 +19,7 @@ Router::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Router::delete('/logout', [LoginController::class, 'logout'])->middleware('auth');
 Router::get('/register', [RegisterController::class, 'registerForm'])->middleware('guest');
 Router::post('/register', [RegisterController::class, 'register'])->middleware('guest');
+
 Router::get('/movies', [MovieController::class, 'index']);
 Router::get('/movies/{id}', [MovieController::class, 'show']);
 Router::post('/favorites/{movieId}', [FavoriteController::class, 'store'])->middleware('auth');
