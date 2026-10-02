@@ -3,175 +3,263 @@
 <?php include_once BASE_PATH . 'views/inc/nav.php'; ?>
 
 <div class="movie-details">
+
     <?php if (!empty($movie['backdrop_path'])): ?>
+
         <div
             class="movie-backdrop"
             style="background-image: url('https://image.tmdb.org/t/p/original<?= htmlspecialchars($movie['backdrop_path']) ?>');">
         </div>
+
     <?php endif; ?>
+
+
     <div class="movie-content">
+
+        <!-- Poster -->
         <div class="movie-poster">
+
             <?php if (!empty($movie['poster_path'])): ?>
+
                 <img
                     src="https://image.tmdb.org/t/p/w500<?= htmlspecialchars($movie['poster_path']) ?>"
-                    alt="<?= htmlspecialchars($movie['title']) ?>"
-                >
+                    alt="<?= htmlspecialchars($movie['title']) ?>">
+
             <?php else: ?>
                 <div class="no-poster">
                     No poster available
                 </div>
             <?php endif; ?>
+
         </div>
+
+        <!-- Movie information -->
         <div class="movie-info">
             <h1>
                 <?= htmlspecialchars($movie['title']) ?>
             </h1>
+
             <?php if (!empty($movie['tagline'])): ?>
                 <p class="tagline">
                     <?= htmlspecialchars($movie['tagline']) ?>
                 </p>
             <?php endif; ?>
+
+            <!-- Movie meta -->
             <div class="movie-meta">
+
                 <?php if (!empty($movie['release_date'])): ?>
                     <span>
                         📅 <?= htmlspecialchars(substr($movie['release_date'], 0, 4)) ?>
                     </span>
                 <?php endif; ?>
+
                 <?php if (!empty($movie['runtime'])): ?>
                     <span>
                         ⏱ <?= htmlspecialchars($movie['runtime']) ?> min
                     </span>
                 <?php endif; ?>
+
+
                 <?php if (isset($movie['vote_average'])): ?>
                     <span>
                         ⭐ <?= number_format((float) $movie['vote_average'], 1) ?>
                     </span>
                 <?php endif; ?>
+
             </div>
+
+
+            <!-- Genres -->
             <?php if (!empty($movie['genres'])): ?>
+
                 <div class="genres">
+
                     <?php foreach ($movie['genres'] as $genre): ?>
                         <span class="genre">
                             <?= htmlspecialchars($genre['name']) ?>
                         </span>
                     <?php endforeach; ?>
+
                 </div>
+
             <?php endif; ?>
+
+
+            <!-- Overview -->
             <h2>Overview</h2>
+
             <p class="overview">
                 <?= htmlspecialchars(
                     $movie['overview'] ?? 'No description available.'
                 ) ?>
             </p>
+
+
+            <!-- Original title -->
             <?php if (!empty($movie['original_title'])): ?>
-                <p>
+
+                <p class="original-title">
                     <strong>Original title:</strong>
                     <?= htmlspecialchars($movie['original_title']) ?>
                 </p>
+
             <?php endif; ?>
 
+
             <?php if (!empty($_SESSION['user'])): ?>
-                <?php if ($isFavorite): ?>
-                    <form action="/favorites/<?= (int) $movie['id'] ?> "method="POST">
-                        <input
-                            type="hidden"
-                            name="_method"
-                            value="delete"
-                        >
-                        <button type="submit" class="favorite-button remove">
-                            💔 Remove from Favorites
-                        </button>
-                    </form>
-                <?php else: ?>
-                    <form
-                        action="/favorites/<?= (int) $movie['id'] ?>" method="POST">
-                        <button type="submit" class="favorite-button">
-                            ❤️ Add to Favorites
-                        </button>
-                    </form>
-                <?php endif; ?>
 
-                <?php if ($isWatchlisted): ?>
+                <!-- Actions -->
+                <div class="movie-actions">
 
-                    <form action="/watchlist/<?= (int) $movie['id'] ?>"method="POST">
-                        <input
-                            type="hidden"
-                            name="_method"
-                            value="delete">
-                        <button type="submit" class="watchlist-button remove">
-                            ❌ Remove from Watchlist
-                        </button>
-                    </form>
+                    <!-- Favorite -->
+                    <?php if ($isFavorite): ?>
 
-                <?php else: ?>
-                    <form
-                        action="/watchlist/<?= (int) $movie['id'] ?>" method="POST">
-                        <button type="submit" class="watchlist-button">
-                            📋 Add to Watchlist
-                        </button>
-                    </form>
-                <?php endif; ?>
+                        <form
+                            action="/favorites/<?= (int) $movie['id'] ?>"
+                            method="POST">
+                            <input
+                                type="hidden"
+                                name="_method"
+                                value="delete">
 
+                            <button
+                                type="submit"
+                                class="favorite-button remove">
+                                💔 Remove from Favorites
+                            </button>
+                        </form>
+
+                    <?php else: ?>
+
+                        <form
+                            action="/favorites/<?= (int) $movie['id'] ?>"
+                            method="POST">
+
+                            <button
+                                type="submit"
+                                class="favorite-button">
+                                ❤️ Add to Favorites
+                            </button>
+                        </form>
+
+                    <?php endif; ?>
+
+
+                    <!-- Watchlist -->
+                    <?php if ($isWatchlisted): ?>
+
+                        <form
+                            action="/watchlist/<?= (int) $movie['id'] ?>"
+                            method="POST">
+                            <input
+                                type="hidden"
+                                name="_method"
+                                value="delete">
+
+                            <button
+                                type="submit"
+                                class="watchlist-button remove">
+                                ❌ Remove from Watchlist
+                            </button>
+                        </form>
+
+                    <?php else: ?>
+
+                        <form
+                            action="/watchlist/<?= (int) $movie['id'] ?>"
+                            method="POST">
+                            <button
+                                type="submit"
+                                class="watchlist-button">
+                                📋 Add to Watchlist
+                            </button>
+                        </form>
+
+                    <?php endif; ?>
+
+                </div>
+
+
+                <!-- Rating -->
                 <div class="rating-section">
-
-                    <h3>⭐ MovieVerse Rating</h3>
+                    <h3>
+                        ⭐ MovieVerse Rating
+                    </h3>
 
                     <?php if ($averageRating !== null): ?>
+
                         <p class="average-rating">
+
                             Community rating:
                             <strong>
                                 <?= number_format((float) $averageRating, 1) ?>/10
                             </strong>
                         </p>
+
                     <?php else: ?>
+
                         <p class="average-rating">
                             No ratings yet.
                         </p>
+
                     <?php endif; ?>
 
-                    <?php if (!empty($_SESSION['user'])): ?>
-                        <form
-                            action="/ratings/<?= (int) $movie['id'] ?>" method="POST" class="rating-form">
-                            <label for="rating">
-                                <?= $userRating !== null
-                                    ? 'Change your rating:'
-                                    : 'Rate this movie:' ?>
-                            </label>
-                            <select name="rating" id="rating" required>
-                                <option value="">
-                                    Select rating
+
+                    <form
+                        action="/ratings/<?= (int) $movie['id'] ?>"
+                        method="POST"
+                        class="rating-form">
+                        <label for="rating">
+                            <?= $userRating !== null
+                                ? 'Change your rating:'
+                                : 'Rate this movie:' ?>
+                        </label>
+
+                        <select
+                            name="rating"
+                            id="rating"
+                            required>
+                            <option value="">
+                                Select rating
+                            </option>
+
+                            <?php for ($i = 1; $i <= 10; $i++): ?>
+
+                                <option
+                                    value="<?= $i ?>"
+                                    <?= $userRating == $i ? 'selected' : '' ?>>
+                                    <?= $i ?>/10
                                 </option>
-                                <?php for ($i = 1; $i <= 10; $i++): ?>
-                                    <option
-                                        value="<?= $i ?>"
-                                        <?= $userRating == $i ? 'selected' : '' ?>>
-                                        <?= $i ?>/10
-                                    </option>
-                                <?php endfor; ?>
-                            </select>
-                            <button type="submit" class="rating-button">
-                                <?= $userRating !== null
-                                    ? 'Update Rating'
-                                    : 'Rate Movie' ?>
-                            </button>
-                        </form>
-                    <?php else: ?>
-                        <p class="rating-login">
-                            Login to rate this movie.
-                        </p>
-                    <?php endif; ?>
+
+                            <?php endfor; ?>
+
+                        </select>
+
+                        <button
+                            type="submit"
+                            class="rating-button">
+                            <?= $userRating !== null
+                                ? 'Update Rating'
+                                : 'Rate Movie' ?>
+                        </button>
+                    </form>
+
                 </div>
+
+
+                <!-- Review -->
                 <div class="review-section">
 
-                <h3>💬 Your Review</h3>
+                    <h3>
+                        💬 Your Review
+                    </h3>
 
-                <?php if (!empty($_SESSION['user'])): ?>
 
                     <form
                         action="/reviews/<?= (int) $movie['id'] ?>"
                         method="POST"
-                        class="review-form"
-                    >
+                        class="review-form">
 
                         <textarea
                             name="content"
@@ -180,17 +268,23 @@
                             required
                         ><?= htmlspecialchars($userReview ?? '') ?></textarea>
 
-                        <button type="submit" class="review-button">
+                        <button
+                            type="submit"
+                            class="review-button">
                             <?= $userReview !== null
                                 ? 'Update Review'
                                 : 'Add Review' ?>
                         </button>
-
                     </form>
 
+
+                    <!-- Reviews -->
                     <div class="reviews-list">
 
-                        <h3>💬 Reviews</h3>
+                        <h3>
+                            💬 Reviews
+                        </h3>
+
 
                         <?php if (!empty($reviews)): ?>
 
@@ -201,9 +295,11 @@
                                     <div class="review-header">
 
                                         <div>
+
                                             <strong>
                                                 <?= htmlspecialchars($review->username) ?>
                                             </strong>
+
 
                                             <?php if (
                                                 !empty($_SESSION['user']) &&
@@ -218,6 +314,7 @@
 
                                         </div>
 
+
                                         <span>
                                             <?= htmlspecialchars($review->created_at) ?>
                                         </span>
@@ -226,7 +323,9 @@
 
 
                                     <p>
-                                        <?= nl2br(htmlspecialchars($review->content)) ?>
+                                        <?= nl2br(
+                                            htmlspecialchars($review->content)
+                                        ) ?>
                                     </p>
 
 
@@ -238,19 +337,15 @@
                                         <form
                                             action="/reviews/<?= (int) $review->id ?>"
                                             method="POST"
-                                            class="delete-review-form"
-                                        >
-
+                                            class="delete-review-form">
                                             <input
                                                 type="hidden"
                                                 name="_method"
-                                                value="delete"
-                                            >
+                                                value="delete">
 
                                             <button
                                                 type="submit"
-                                                class="delete-review-button"
-                                            >
+                                                class="delete-review-button">
                                                 🗑️ Delete Review
                                             </button>
 
@@ -272,22 +367,35 @@
 
                     </div>
 
-                <?php else: ?>
+                </div>
 
-                    <p class="review-login">
-                        Login to write a review.
+            <?php else: ?>
+
+                <!-- Guest message -->
+                <div class="guest-actions">
+
+                    <p>
+                        Login to add this movie to your Favorites or Watchlist,
+                        rate it and write a review.
                     </p>
 
-                <?php endif; ?>
+                    <a href="/login" class="login-movie-button">
+                        Login
+                    </a>
 
-            </div>
+                </div>
+
             <?php endif; ?>
 
+            <!-- Back -->
             <a href="/movies" class="back-button">
                 ← Back to movies
             </a>
+
         </div>
+
     </div>
+
 </div>
 
 <?php include_once BASE_PATH . 'views/inc/footer.php'; ?>
