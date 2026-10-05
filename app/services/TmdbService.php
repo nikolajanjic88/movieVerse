@@ -13,7 +13,6 @@ class TmdbService
         $this->apiKey = TMDB_API_KEY;
     }
 
-
     public function searchMovies(string $query,int $page = 1): array 
     {
         $url = $this->baseUrl . '/search/movie?' . http_build_query([
@@ -86,6 +85,18 @@ class TmdbService
             'api_key' => $this->apiKey,
             'language' => 'en-US',
             'page' => $page,
+        ]);
+
+        $response = file_get_contents($url);
+
+        return json_decode($response, true);
+    }
+
+    public function getMovieCredits(int $movieId): array
+    {
+        $url = $this->baseUrl . "/movie/{$movieId}/credits?" . http_build_query([
+            'api_key' => $this->apiKey,
+            'language' => 'en-US',
         ]);
 
         $response = file_get_contents($url);

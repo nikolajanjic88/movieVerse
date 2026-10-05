@@ -52,6 +52,10 @@ class MovieController extends Controller
     {
         $movie = $this->tmdb->getMovie((int) $id);
 
+        $credits = $this->tmdb->getMovieCredits((int) $id);
+
+        $cast = array_slice($credits['cast'] ?? [], 0, 10);
+
         $isFavorite = false;
         $isWatchlisted = false;
         $userRating = null;
@@ -88,6 +92,7 @@ class MovieController extends Controller
 
         return $this->view('movies/show', [
             'movie' => $movie,
+            'cast' => $cast,
             'isFavorite' => $isFavorite,
             'isWatchlisted' => $isWatchlisted,
             'userRating' => $userRating,
