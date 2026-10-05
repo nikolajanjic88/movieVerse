@@ -104,5 +104,18 @@ class TmdbService
         return json_decode($response, true);
     }
 
+    
+    public function getMovieVideos(int $movieId): array
+    {
+        $url = $this->baseUrl . "/movie/{$movieId}/videos?" . http_build_query([
+            'api_key' => $this->apiKey,
+            'language' => 'en-US',
+        ]);
+
+        $response = file_get_contents($url);
+
+        return json_decode($response, true);
+    }
+
 
 }

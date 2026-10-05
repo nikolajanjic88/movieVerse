@@ -56,6 +56,21 @@ class MovieController extends Controller
 
         $cast = array_slice($credits['cast'] ?? [], 0, 10);
 
+        $videos = $this->tmdb->getMovieVideos((int) $id);
+
+        $trailer = null;
+
+        foreach ($videos['results'] ?? [] as $video) {
+            if (
+                $video['site'] === 'YouTube' &&
+                $video['type'] === 'Trailer' &&
+                $video['official'] === true
+            ) {
+                $trailer = $video;
+                break;
+            }
+        }
+
         $isFavorite = false;
         $isWatchlisted = false;
         $userRating = null;
@@ -93,6 +108,7 @@ class MovieController extends Controller
         return $this->view('movies/show', [
             'movie' => $movie,
             'cast' => $cast,
+            'trailer' => $trailer,
             'isFavorite' => $isFavorite,
             'isWatchlisted' => $isWatchlisted,
             'userRating' => $userRating,
