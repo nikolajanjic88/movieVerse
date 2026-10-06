@@ -117,5 +117,19 @@ class TmdbService
         return json_decode($response, true);
     }
 
+    
+    public function getSimilarMovies(int $movieId): array
+    {
+        $url = $this->baseUrl . "/movie/{$movieId}/similar?" . http_build_query([
+            'api_key' => $this->apiKey,
+            'language' => 'en-US',
+            'page' => 1,
+        ]);
+
+        $response = file_get_contents($url);
+
+        return json_decode($response, true);
+    }
+
 
 }

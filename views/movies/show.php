@@ -17,21 +17,7 @@
     <div class="movie-content">
 
         <!-- Poster -->
-        <div class="movie-poster">
-
-            <?php if (!empty($movie['poster_path'])): ?>
-
-                <img
-                    src="https://image.tmdb.org/t/p/w500<?= htmlspecialchars($movie['poster_path']) ?>"
-                    alt="<?= htmlspecialchars($movie['title']) ?>">
-
-            <?php else: ?>
-                <div class="no-poster">
-                    No poster available
-                </div>
-            <?php endif; ?>
-
-        </div>
+        <?php include_once BASE_PATH . 'views/movies/components/poster.php'; ?>
 
         <!-- Movie information -->
         <div class="movie-info">
@@ -46,44 +32,11 @@
             <?php endif; ?>
 
             <!-- Movie meta -->
-            <div class="movie-meta">
-
-                <?php if (!empty($movie['release_date'])): ?>
-                    <span>
-                        📅 <?= htmlspecialchars(substr($movie['release_date'], 0, 4)) ?>
-                    </span>
-                <?php endif; ?>
-
-                <?php if (!empty($movie['runtime'])): ?>
-                    <span>
-                        ⏱ <?= htmlspecialchars($movie['runtime']) ?> min
-                    </span>
-                <?php endif; ?>
-
-
-                <?php if (isset($movie['vote_average'])): ?>
-                    <span>
-                        ⭐ <?= number_format((float) $movie['vote_average'], 1) ?>
-                    </span>
-                <?php endif; ?>
-
-            </div>
+            <?php include_once BASE_PATH . 'views/movies/components/movie-meta.php'; ?>
 
 
             <!-- Genres -->
-            <?php if (!empty($movie['genres'])): ?>
-
-                <div class="genres">
-
-                    <?php foreach ($movie['genres'] as $genre): ?>
-                        <span class="genre">
-                            <?= htmlspecialchars($genre['name']) ?>
-                        </span>
-                    <?php endforeach; ?>
-
-                </div>
-
-            <?php endif; ?>
+            <?php include_once BASE_PATH . 'views/movies/components/genres.php'; ?>
 
 
             <!-- Overview -->
@@ -106,430 +59,32 @@
 
             <?php endif; ?>
 
-            <?php if (!empty($cast)): ?>
-
-                <div class="cast-section">
-
-                    <h2>🎭 Cast</h2>
-
-                    <div class="cast-grid">
-
-                        <?php foreach ($cast as $actor): ?>
-
-                            <div class="cast-card">
-
-                                <?php if (!empty($actor['profile_path'])): ?>
-
-                                    <img
-                                        src="https://image.tmdb.org/t/p/w185<?= htmlspecialchars($actor['profile_path']) ?>"
-                                        alt="<?= htmlspecialchars($actor['name']) ?>">
-
-                                <?php else: ?>
-
-                                    <div class="cast-no-image">
-                                        No image
-                                    </div>
-
-                                <?php endif; ?>
-
-                                <div class="cast-info">
-
-                                    <strong>
-                                        <?= htmlspecialchars($actor['name']) ?>
-                                    </strong>
-
-                                    <?php if (!empty($actor['character'])): ?>
-
-                                        <span>
-                                            <?= htmlspecialchars($actor['character']) ?>
-                                        </span>
-
-                                    <?php endif; ?>
-
-                                </div>
-
-                            </div>
-
-                        <?php endforeach; ?>
-
-                    </div>
-
-                </div>
-
-            <?php endif; ?>
-
-          
-            <?php if (!empty($trailer)): ?>
-
-                <div class="trailer-section">
-
-                    <h2>🎬 Official Trailer</h2>
-
-                    <div class="trailer-container">
-
-                        <iframe
-                            src="https://www.youtube.com/embed/<?= htmlspecialchars($trailer['key']) ?>"
-                            title="<?= htmlspecialchars($trailer['name']) ?>"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        ></iframe>
-
-                    </div>
-
-                </div>
-
-            <?php endif; ?>
-
-            <?php if (
-                !empty($movie['budget']) ||
-                !empty($movie['revenue']) ||
-                !empty($movie['production_companies'])
-            ): ?>
-
-                <div class="production-section">
-
-                    <h2>🎥 Production</h2>
-
-                    <div class="production-grid">
-
-                        <?php if (!empty($movie['budget'])): ?>
-
-                            <div class="production-item">
-
-                                <span class="production-label">
-                                    Budget
-                                </span>
-
-                                <strong>
-                                    $<?= number_format((float) $movie['budget']) ?>
-                                </strong>
-
-                            </div>
-
-                        <?php endif; ?>
-
-
-                        <?php if (!empty($movie['revenue'])): ?>
-
-                            <div class="production-item">
-
-                                <span class="production-label">
-                                    Box Office
-                                </span>
-
-                                <strong>
-                                    $<?= number_format((float) $movie['revenue']) ?>
-                                </strong>
-
-                            </div>
-
-                        <?php endif; ?>
-
-                    </div>
-
-
-                    <?php if (!empty($movie['production_companies'])): ?>
-
-                        <div class="production-companies">
-
-                            <h3>Production Companies</h3>
-
-                            <div class="company-list">
-
-                                <?php foreach ($movie['production_companies'] as $company): ?>
-
-                                    <div class="company-card">
-
-                                        <?php if (!empty($company['logo_path'])): ?>
-
-                                            <img
-                                                src="https://image.tmdb.org/t/p/w200<?= htmlspecialchars($company['logo_path']) ?>"
-                                                alt="<?= htmlspecialchars($company['name']) ?>"
-                                            >
-
-                                        <?php endif; ?>
-
-                                        <span>
-                                            <?= htmlspecialchars($company['name']) ?>
-                                        </span>
-
-                                    </div>
-
-                                <?php endforeach; ?>
-
-                            </div>
-
-                        </div>
-
-                    <?php endif; ?>
-
-                </div>
-
-            <?php endif; ?>
+            <!-- Director -->
+            <?php include_once BASE_PATH . 'views/movies/components/director.php'; ?>
+
+            <!-- Cast -->    
+            <?php include_once BASE_PATH . 'views/movies/components/cast.php'; ?>
+
+            <!-- Trailer -->
+            <?php include_once BASE_PATH . 'views/movies/components/trailer.php'; ?>
+            
+            <!-- Production -->  
+            <?php include_once BASE_PATH . 'views/movies/components/production.php'; ?>  
+            
        
-
             <?php if (!empty($_SESSION['user'])): ?>
 
                 <!-- Actions -->
-                <div class="movie-actions">
-
-                    <!-- Favorite -->
-                    <?php if ($isFavorite): ?>
-
-                        <form
-                            action="/favorites/<?= (int) $movie['id'] ?>"
-                            method="POST">
-                            <input
-                                type="hidden"
-                                name="_method"
-                                value="delete">
-
-                            <button
-                                type="submit"
-                                class="favorite-button remove">
-                                💔 Remove from Favorites
-                            </button>
-                        </form>
-
-                    <?php else: ?>
-
-                        <form
-                            action="/favorites/<?= (int) $movie['id'] ?>"
-                            method="POST">
-
-                            <button
-                                type="submit"
-                                class="favorite-button">
-                                ❤️ Add to Favorites
-                            </button>
-                        </form>
-
-                    <?php endif; ?>
-
-
-                    <!-- Watchlist -->
-                    <?php if ($isWatchlisted): ?>
-
-                        <form
-                            action="/watchlist/<?= (int) $movie['id'] ?>"
-                            method="POST">
-                            <input
-                                type="hidden"
-                                name="_method"
-                                value="delete">
-
-                            <button
-                                type="submit"
-                                class="watchlist-button remove">
-                                ❌ Remove from Watchlist
-                            </button>
-                        </form>
-
-                    <?php else: ?>
-
-                        <form
-                            action="/watchlist/<?= (int) $movie['id'] ?>"
-                            method="POST">
-                            <button
-                                type="submit"
-                                class="watchlist-button">
-                                📋 Add to Watchlist
-                            </button>
-                        </form>
-
-                    <?php endif; ?>
-
-                </div>
+                <?php include_once BASE_PATH . 'views/movies/components/actions.php'; ?>
 
 
                 <!-- Rating -->
-                <div class="rating-section">
-                    <h3>
-                        ⭐ MovieVerse Rating
-                    </h3>
-
-                    <?php if ($averageRating !== null): ?>
-
-                        <p class="average-rating">
-
-                            Community rating:
-                            <strong>
-                                <?= number_format((float) $averageRating, 1) ?>/10
-                            </strong>
-                        </p>
-
-                    <?php else: ?>
-
-                        <p class="average-rating">
-                            No ratings yet.
-                        </p>
-
-                    <?php endif; ?>
-
-
-                    <form
-                        action="/ratings/<?= (int) $movie['id'] ?>"
-                        method="POST"
-                        class="rating-form">
-                        <label for="rating">
-                            <?= $userRating !== null
-                                ? 'Change your rating:'
-                                : 'Rate this movie:' ?>
-                        </label>
-
-                        <select
-                            name="rating"
-                            id="rating"
-                            required>
-                            <option value="">
-                                Select rating
-                            </option>
-
-                            <?php for ($i = 1; $i <= 10; $i++): ?>
-
-                                <option
-                                    value="<?= $i ?>"
-                                    <?= $userRating == $i ? 'selected' : '' ?>>
-                                    <?= $i ?>/10
-                                </option>
-
-                            <?php endfor; ?>
-
-                        </select>
-
-                        <button
-                            type="submit"
-                            class="rating-button">
-                            <?= $userRating !== null
-                                ? 'Update Rating'
-                                : 'Rate Movie' ?>
-                        </button>
-                    </form>
-
-                </div>
+                <?php include_once BASE_PATH . 'views/movies/components/rating.php'; ?>
 
 
                 <!-- Review -->
-                <div class="review-section">
-
-                    <h3>
-                        💬 Your Review
-                    </h3>
-
-
-                    <form
-                        action="/reviews/<?= (int) $movie['id'] ?>"
-                        method="POST"
-                        class="review-form">
-
-                        <textarea
-                            name="content"
-                            rows="5"
-                            placeholder="Write your review..."
-                            required
-                        ><?= htmlspecialchars($userReview ?? '') ?></textarea>
-
-                        <button
-                            type="submit"
-                            class="review-button">
-                            <?= $userReview !== null
-                                ? 'Update Review'
-                                : 'Add Review' ?>
-                        </button>
-                    </form>
-
-
-                    <!-- Reviews -->
-                    <div class="reviews-list">
-
-                        <h3>
-                            💬 Reviews
-                        </h3>
-
-
-                        <?php if (!empty($reviews)): ?>
-
-                            <?php foreach ($reviews as $review): ?>
-
-                                <div class="review-card">
-
-                                    <div class="review-header">
-
-                                        <div>
-
-                                            <strong>
-                                                <?= htmlspecialchars($review->username) ?>
-                                            </strong>
-
-
-                                            <?php if (
-                                                !empty($_SESSION['user']) &&
-                                                (int) $_SESSION['user'] === (int) $review->user_id
-                                            ): ?>
-
-                                                <span class="your-review">
-                                                    Your review
-                                                </span>
-
-                                            <?php endif; ?>
-
-                                        </div>
-
-
-                                        <span>
-                                            <?= htmlspecialchars($review->created_at) ?>
-                                        </span>
-
-                                    </div>
-
-
-                                    <p>
-                                        <?= nl2br(
-                                            htmlspecialchars($review->content)
-                                        ) ?>
-                                    </p>
-
-
-                                    <?php if (
-                                        !empty($_SESSION['user']) &&
-                                        (int) $_SESSION['user'] === (int) $review->user_id
-                                    ): ?>
-
-                                        <form
-                                            action="/reviews/<?= (int) $review->id ?>"
-                                            method="POST"
-                                            class="delete-review-form">
-                                            <input
-                                                type="hidden"
-                                                name="_method"
-                                                value="delete">
-
-                                            <button
-                                                type="submit"
-                                                class="delete-review-button">
-                                                🗑️ Delete Review
-                                            </button>
-
-                                        </form>
-
-                                    <?php endif; ?>
-
-                                </div>
-
-                            <?php endforeach; ?>
-
-                        <?php else: ?>
-
-                            <p class="no-reviews">
-                                No reviews yet. Be the first to write one!
-                            </p>
-
-                        <?php endif; ?>
-
-                    </div>
-
-                </div>
+                <?php include_once BASE_PATH . 'views/movies/components/review.php'; ?>
+                
 
             <?php else: ?>
 
@@ -557,6 +112,9 @@
         </div>
 
     </div>
+
+    <!-- Similar movies -->
+    <?php include_once BASE_PATH . 'views/movies/components/similar-movies.php'; ?>
 
 </div>
 

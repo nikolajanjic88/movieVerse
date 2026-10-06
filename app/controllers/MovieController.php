@@ -52,9 +52,26 @@ class MovieController extends Controller
     {
         $movie = $this->tmdb->getMovie((int) $id);
 
+        $similarResponse = $this->tmdb->getSimilarMovies((int) $id);
+
+        $similarMovies = array_slice(
+            $similarResponse['results'] ?? [],
+            0,
+            6
+        );
+
         $credits = $this->tmdb->getMovieCredits((int) $id);
 
         $cast = array_slice($credits['cast'] ?? [], 0, 10);
+
+        $director = null;
+
+        foreach ($credits['crew'] ?? [] as $crewMember) {
+            if ($crewMember['job'] === 'Director') {
+                $director = $crewMember;
+                break;
+            }
+        }
 
         $videos = $this->tmdb->getMovieVideos((int) $id);
 
@@ -108,7 +125,9 @@ class MovieController extends Controller
         return $this->view('movies/show', [
             'movie' => $movie,
             'cast' => $cast,
+            'director' => $director,
             'trailer' => $trailer,
+            'similarMovies' => $similarMovies,
             'isFavorite' => $isFavorite,
             'isWatchlisted' => $isWatchlisted,
             'userRating' => $userRating,
