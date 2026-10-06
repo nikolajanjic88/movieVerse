@@ -64,13 +64,14 @@ class TmdbService
         return json_decode($response, true);
     }
 
-    public function discoverMoviesByGenre(int $genreId): array
+    public function discoverMoviesByGenre(int $genreId, int $page = 1): array 
     {
         $url = $this->baseUrl . '/discover/movie?' . http_build_query([
             'api_key' => $this->apiKey,
             'language' => 'en-US',
             'with_genres' => $genreId,
             'sort_by' => 'popularity.desc',
+            'page' => $page,
         ]);
 
         $response = file_get_contents($url);

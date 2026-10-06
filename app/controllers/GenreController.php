@@ -60,11 +60,18 @@ class GenreController extends Controller
             abort();
         }
 
-        $movies = $this->tmdb->discoverMoviesByGenre((int) $id);
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+
+        $moviesResponse = $this->tmdb->discoverMoviesByGenre(
+            (int) $id,
+            $page
+        );
 
         return $this->view('genres/show', [
             'genre' => $genre,
-            'movies' => $movies['results'] ?? []
+            'movies' => $moviesResponse['results'] ?? [],
+            'currentPage' => $moviesResponse['page'] ?? $page,
+            'totalPages' => $moviesResponse['total_pages'] ?? 1
         ]);
     }
 }
